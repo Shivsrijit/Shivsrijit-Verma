@@ -1,0 +1,1347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Portfolio - Developer & Football Enthusiast</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #ffffff;
+            background: #0a0a0a;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Football field background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(0, 255, 136, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(0, 212, 255, 0.03) 0%, transparent 50%),
+                linear-gradient(90deg, transparent 49.8%, rgba(255, 255, 255, 0.02) 49.8%, rgba(255, 255, 255, 0.02) 50.2%, transparent 50.2%),
+                linear-gradient(0deg, transparent 49.8%, rgba(255, 255, 255, 0.02) 49.8%, rgba(255, 255, 255, 0.02) 50.2%, transparent 50.2%);
+            background-size: 100% 100%, 100% 100%, 60px 60px, 60px 60px;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Floating football particles */
+        .football-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .football-particle {
+            position: absolute;
+            font-size: 24px;
+            animation: float 8s ease-in-out infinite;
+            opacity: 0.1;
+            cursor: pointer;
+            pointer-events: auto;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .football-particle:hover {
+            transform: scale(1.5) rotate(360deg);
+            opacity: 1;
+            filter: drop-shadow(0 0 10px rgba(0, 255, 136, 0.8));
+        }
+
+        .football-particle.clicked {
+            animation: kick 1s ease-out forwards;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(180deg); }
+        }
+
+        @keyframes kick {
+            0% { transform: translateY(0px) scale(1); }
+            50% { transform: translateY(-100px) scale(1.2) rotate(720deg); }
+            100% { transform: translateY(-200px) scale(0.5) rotate(1080deg); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Header */
+        .header {
+            background: transparent;
+            color: white;
+            padding: 32px 0 0 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: background 0.3s;
+        }
+
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #fff;
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            transition: color 0.3s;
+        }
+        .logo:hover {
+            color: #00ff88;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 48px;
+            align-items: center;
+            list-style: none;
+        }
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 0.01em;
+            transition: color 0.2s;
+            padding: 0;
+        }
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #00ff88;
+        }
+
+        /* Hamburger menu (mobile) */
+        .nav-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            z-index: 1100;
+        }
+        .nav-toggle span {
+            display: block;
+            width: 28px;
+            height: 3px;
+            margin: 5px 0;
+            background: #fff;
+            border-radius: 2px;
+            transition: all 0.3s;
+        }
+        /* Overlay menu */
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(10,10,10,0.98);
+            z-index: 1050;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .nav-overlay.open {
+            display: flex;
+        }
+        .nav-overlay ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+            align-items: center;
+        }
+        .nav-overlay a {
+            color: #fff;
+            font-size: 2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .nav-overlay a:hover,
+        .nav-overlay a.active {
+            color: #00ff88;
+        }
+
+        @media (max-width: 900px) {
+            .nav-links {
+                display: none;
+            }
+            .nav-toggle {
+                display: flex;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+            color: white;
+            position: relative;
+            padding: 0;
+            background: transparent;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 24px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .hero-text {
+            max-width: 600px;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(3rem, 8vw, 4.5rem);
+            font-weight: 800;
+            margin-bottom: 24px;
+            line-height: 0.95;
+            color: #ffffff;
+            letter-spacing: -0.03em;
+        }
+
+        .hero-content .subtitle {
+            font-size: clamp(1.25rem, 3vw, 1.5rem);
+            margin-bottom: 32px;
+            color: #00ff88;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .subtitle .cursor {
+            animation: blink 1s step-end infinite;
+        }
+
+        @keyframes blink {
+            from, to { color: transparent }
+            50% { color: #00ff88; }
+        }
+
+        .hero-content p {
+            font-size: clamp(1.1rem, 2.5vw, 1.25rem);
+            margin-bottom: 48px;
+            color: #a0a0a0;
+            font-weight: 400;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+
+        .hero-intro {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: hsl(0, 1%, 83%);
+            margin-bottom: 2px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-top: 40px;
+        }
+
+        .cta-button i {
+            margin-right: 8px;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 12px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #00ff88;
+            color: #0a0a0a;
+            border: 2px solid #00ff88;
+        }
+
+        .cta-button:hover {
+            background: #00d46a;
+            border-color: #00d46a;
+            transform: translateY(-2px);
+        }
+        
+        .cta-button.secondary {
+            background: transparent;
+            color: #00ff88;
+        }
+
+        .cta-button.secondary:hover {
+            background: rgba(0, 255, 136, 0.1);
+            transform: translateY(-2px);
+        }
+        
+        .scroll-indicator, .scroll-indicator:hover {
+            color: #a0a0a0;
+            text-decoration: none;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 120px;
+            right: -30px;
+            transform: rotate(90deg);
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            z-index: 5;
+        }
+
+        .hero-visual {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .hero-image {
+            width: 350px;
+            height: 400px;
+            border-radius: 20px;
+            object-fit: cover;
+            /* border: 3px solid #00ff88; */
+            /* box-shadow: 0 20px 60px rgba(0, 255, 136, 0.2); */
+            transition: transform 0.3s ease;
+            
+        }
+
+        .hero-image:hover {
+            transform: scale(1.05);
+        }
+
+        /* Sections */
+        .section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section h2 {
+            text-align: center;
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 50px;
+            color: #ffffff;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 6px;
+            background: linear-gradient(45deg, #00ff88, #00d4ff, #ff6b6b);
+            border-radius: 3px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: translateX(-50%) scaleX(1); }
+            50% { transform: translateX(-50%) scaleX(1.2); }
+        }
+
+        /* About Section */
+        .about-content {
+            /* display: grid;
+            grid-template-columns: 1fr 1fr; */
+            gap: 80px;
+            align-items: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .about-text {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: #a0a0a0;
+            margin-bottom: 50px;
+        }
+
+        .about-text p {
+            margin-bottom: 24px;
+        }
+
+        .about-image {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .about-image::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 16px;
+            transform: rotate(-5deg);
+            transition: all 0.3s ease;
+            z-index: -1;
+        }
+
+        .about-image:hover::before {
+            transform: rotate(0deg);
+        }
+
+        .about-image img {
+            width: 300px;
+            height: 300px;
+            border-radius: 16px;
+            object-fit: cover;
+            border: 3px solid #00ff88;
+            transition: transform 0.3s ease;
+            position: relative;
+        }
+
+        .about-image img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Experience Section */
+        .experience-grid {
+            display: grid;
+            gap: 32px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .experience-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .experience-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .experience-title {
+            color: #ffffff;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .experience-company {
+            color: #00ff88;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .experience-date {
+            color: #666;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .experience-description {
+            color: #a0a0a0;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        /* Skills Section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .skill-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .skill-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .skill-card h3 {
+            color: #ffffff;
+            margin-bottom: 16px;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .skill-card p {
+            color: #a0a0a0;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        /* Projects Section */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .project-image {
+            height: 200px;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a0a0a;
+            font-size: 3rem;
+        }
+
+        .project-content {
+            padding: 32px;
+        }
+
+        .project-content h3 {
+            color: #ffffff;
+            margin-bottom: 12px;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .project-content p {
+            color: #a0a0a0;
+            line-height: 1.7;
+            font-size: 1rem;
+            margin-bottom: 24px;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .project-link {
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border: 1px solid rgba(0, 255, 136, 0.5);
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .project-link:hover {
+            background: rgba(0, 255, 136, 0.1);
+            border-color: #00ff88;
+        }
+
+        /* Education Section */
+        .education-grid {
+            display: grid;
+            gap: 32px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .education-card {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 32px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .education-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(0, 255, 136, 0.3);
+            transform: translateY(-4px);
+        }
+
+        .education-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .education-degree {
+            color: #ffffff;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .education-school {
+            color: #00ff88;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .education-date {
+            color: #666;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .education-description {
+            color: #a0a0a0;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        /* Contact Section */
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.03);
+            color: #ffffff;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #00ff88;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #666;
+        }
+
+        .submit-btn {
+            background: #00ff88;
+            color: #0a0a0a;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .submit-btn:hover {
+            background: #00d46a;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(0, 0, 0, 0.98);
+            color: #a0a0a0;
+            text-align: center;
+            padding: 80px 0 40px;
+            margin-top: 80px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 136, 0.3), transparent);
+        }
+
+        .footer-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .footer h3 {
+            color: #ffffff;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .footer p {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            opacity: 0.8;
+        }
+
+        .social-links {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .social-links a {
+            color: #a0a0a0;
+            font-size: 20px;
+            text-decoration: none;
+            padding: 16px;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 60px;
+            height: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .social-links a:hover::before {
+            opacity: 1;
+        }
+
+        .social-links a:hover {
+            color: #0a0a0a;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+            border-color: transparent;
+        }
+
+        .social-links a span {
+            position: relative;
+            z-index: 1;
+        }
+
+        .footer-bottom {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 50px;
+            }
+
+            .about-image img {
+                width: 280px;
+                height: 280px;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 80px 0;
+                margin: 30px 0;
+            }
+
+            .experience-header,
+            .education-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /* Scroll animations */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s ease;
+        }
+
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading animation */
+        body {
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        /* Bottom Nav */
+        .bottom-nav {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(25, 25, 25, 0.7);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            padding: 8px;
+            display: flex;
+            gap: 8px;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            opacity: 1;
+            transform: translateX(-50%);
+        }
+        .bottom-nav a {
+            color: #a0a0a0;
+            text-decoration: none;
+            font-size: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .bottom-nav a:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .bottom-nav a.active {
+            background: #00ff88;
+            color: #0a0a0a;
+        }
+        
+        @media (max-width: 900px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            .hero-text {
+                padding-left: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            .hero-visual {
+                display: none; /* Hide image on mobile for cleaner look */
+            }
+            .scroll-indicator {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+             .bottom-nav {
+                width: calc(100% - 32px);
+             }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating football particles -->
+    <div class="football-particles" id="football-particles"></div>
+
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="hero-intro" style="margin-bottom: 5px; margin-left: 200px; color: #fff; font-weight: 700;">Hello, I'm</p>
+                <h1>Shivsrijit Verma</h1>
+                <div class="subtitle">AI and Software Developer<span class="cursor">|</span></div>
+                <div class="hero-buttons">
+                    <a href="resume.pdf" class="cta-button secondary" download><i class="fas fa-download"></i> Resume</a>
+                    <a href="#contact" class="cta-button">Let's Connect!</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <img src="Images/Screenshot_2025-07-27_200859-removebg-preview.png" alt="Shivsrijit Verma" class="hero-image">
+            </div>
+        </div>
+        <a href="#about" class="scroll-indicator">Scroll Down</a>
+    </section>
+
+    <section id="about" class="section scroll-animate">
+        <div class="container">
+            <h2>About Me</h2>
+            <div class="about-content" style="text-align: center;">
+                <div class="about-text" style="width: 100%;">
+                    <p>Hello! I'm Shivsrijit Verma, a B.Tech student specializing in Artificial Intelligence and Data Science at Shiv Nadar University, Chennai, with a CGPA of 8.77.</p>
+                    <p>I’m passionate about designing intelligent systems and solving real-world problems through AI, machine learning, and software development. I enjoy building end-to-end solutions whether it's architecting scalable backend systems, creating smart applications, or experimenting with data-driven insights.</p>
+                    <p>I recently completed an AI Research Internship at Expelee, where I worked on developing AI-driven solutions and streamlining automated workflows. My interests extend beyond the classroom into hands-on projects involving AI research, system design, and innovative software engineering.</p>
+                    <p>Outside of academics and tech, I’m deeply interested in mathematics, physics, low-level system design, and love spending time with chess, football, and music, which help me stay focused and creative.</p>
+                </div>
+                <!-- <div class="about-image">
+                    <img src="Screenshot 2025-07-27 200859.png" alt="Shivsrijit Verma">
+                </div> -->
+            </div>
+        </div>
+    </section>
+
+    <section id="experience" class="section scroll-animate">
+        <div class="container">
+            <h2>Professional Experience</h2>
+            <div class="experience-grid">
+                <div class="experience-card scroll-animate">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-title">AI Research Intern</div>
+                            <div class="experience-company">Expelee (Dubai, UAE - Remote)</div>
+                        </div>
+                        <div class="experience-date">May 2025 - July 2025</div>
+                    </div>
+                    <div class="experience-description">
+                        Worked remotely on an AI-focused internship where I contributed to automating lead generation and streamlining client acquisition workflows by researching and implementing emerging AI tools. I collaborated with cross-functional teams and engaged with industry professionals to stay updated on the latest trends. Working remotely made it easy to manage my schedule, stay focused, and deliver consistently without the distractions of a traditional office.                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills" class="section scroll-animate">
+        <div class="container">
+            <h2>Skills & Expertise</h2>
+            <div class="skills-grid">
+                <div class="skill-card scroll-animate">
+                    <h3>Programming Languages</h3>
+                    <p>Python, Java, C++, C, JavaScript, HTML, CSS, SQL</p>
+                </div>
+                <div class="skill-card scroll-animate">
+                    <h3>AI & Machine Learning</h3>
+                    <p>PyTorch, TensorFlow, Scikit-learn, NumPy, Pandas, OpenCV, YOLOv8, Hugging Face, LangChain</p>
+                </div>
+                <div class="skill-card scroll-animate">
+                    <h3>Web Development</h3>
+                    <p>React, Node.js, Spring Boot, Flask, FastAPI, Streamlit, HTML, CSS, JavaScript</p>
+                </div>
+                <div class="skill-card scroll-animate">
+                    <h3>Tools & Technologies</h3>
+                    <p>Git, GitHub, VS Code, IntelliJ IDEA, Linux, Docker, Kubernetes, MongoDB, MySQL</p>
+                </div>
+                <div class="skill-card scroll-animate">
+                    <h3>Relevant Courseworks</h3>
+                    <p>Data Structures & Algorithms, Object-Oriented Programming, Operating Systems, Database Management Systems, Machine Learning, Statistics</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects" class="section scroll-animate">
+        <div class="container">
+            <h2>Featured Projects</h2>
+            <div class="projects-grid">
+                <div class="project-card scroll-animate">
+                    <div class="project-image">🤖</div>
+                    <div class="project-content">
+                        <h3>EduScope</h3>
+                        <p>Engineered a comprehensive AI learning platform prototype that could potentially reduce learning curve for beginners by 40%. Integrated YOLOv8 for real-time object detection achieving 95% accuracy on custom datasets.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/Shivsrijit/EduScope" class="project-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="#" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card scroll-animate">
+                    <div class="project-image">🏏</div>
+                    <div class="project-content">
+                        <h3>IPL TRANSFERMARKT</h3>
+                        <p>Created a comprehensive database system that processed statistics for over 200 IPL players. Developed an algorithm to calculate market values based on performance metrics, potentially reducing auction guesswork by 35%.</p>
+                        <div class="project-links">
+                            <a href="#" class="project-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="#" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card scroll-animate">
+                    <div class="project-image">🛡️</div>
+                    <div class="project-content">
+                        <h3>PhiTector - Phishing Detection Chrome Extension</h3>
+                        <p>Developed a machine learning model that detects phishing websites with 92% accuracy. Engineered feature extraction algorithms that analyze URL structures and website content for suspicious patterns.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/Shivsrijit/PhiTector" class="project-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="#" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="project-card scroll-animate">
+                    <div class="project-image">💰</div>
+                    <div class="project-content">
+                        <h3>Expense Tracking App</h3>
+                        <p>Designed and implemented a full-stack application prototype with potential to help users reduce unnecessary expenses by 25%. Created intuitive data visualization components that track spending patterns across multiple categories.</p>
+                        <div class="project-links">
+                            <a href="https://github.com/Shivsrijit/Expense-Tracker-App" class="project-link" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+                            <a href="#" class="project-link" target="_blank"><i class="fas fa-external-link-alt"></i> Live Demo</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="education" class="section scroll-animate">
+        <div class="container">
+            <h2>Education</h2>
+            <div class="education-grid">
+                <div class="education-card scroll-animate">
+                    <div class="education-header">
+                        <div>
+                            <div class="education-degree">BTech in Artificial Intelligence and Data Science</div>
+                            <div class="education-school">Shiv Nadar University Chennai</div>
+                        </div>
+                        <div class="education-date">2023 - 2027</div>
+                    </div>
+                    <div class="education-description">
+                        CGPA: 8.77
+                        <p>Studying on full merit scholarship for tution and accommodation</p>
+                    </div>
+                </div>
+                <div class="education-card scroll-animate">
+                    <div class="education-header">
+                        <div>
+                            <div class="education-degree">Secondary and Higher Secondary Education</div>
+                            <div class="education-school">VidyaGyan School, Sitapur</div>
+                        </div>
+                        <div class="education-date">2016 - 2023</div>
+                    </div>
+                    <div class="education-description">
+                        <p>CBSE XII: 93.6% | CBSE X: 98.8% </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="achievements" class="section scroll-animate">
+        <div class="container">
+            <h2>Achievements</h2>
+            <div class="experience-grid">
+                <div class="experience-card scroll-animate">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-title">CodeFusion Hackathon - AIR 7</div>
+                            <div class="experience-company">Riwayat - Platform for documenting Indian culture</div>
+                        </div>
+                        <div class="experience-date">2025</div>
+                    </div>
+                    <div class="experience-description">
+                        Developed a digital heritage preservation solution with cataloging features for traditional arts and crafts, achieving 7th rank nationally.
+                    </div>
+                </div>
+                <div class="experience-card scroll-animate">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-title">Merit Scholarship</div>
+                            <div class="experience-company">Shiv Nadar University</div>
+                        </div>
+                        <div class="experience-date">2023 - Present</div>
+                    </div>
+                    <div class="experience-description">
+                        Full tuition and accommodation scholarship awarded for academic excellence and overall merit.
+                    </div>
+                </div>
+                <div class="experience-card scroll-animate">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-title">District and School Topper</div>
+                            <div class="experience-company">CBSE X Board Exams</div>
+                        </div>
+                        <div class="experience-date">2021</div>
+                    </div>
+                    <div class="experience-description">
+                        Achieved 98.8% marks in CBSE X Board Exams, becoming the school and district topper.
+                    </div>
+                </div>
+                <div class="experience-card scroll-animate">
+                    <div class="experience-header">
+                        <div>
+                            <div class="experience-title">VidyaGyan Scholarship</div>
+                            <div class="experience-company">Got selected for VidyaGyan school</div>
+                        </div>
+                        <div class="experience-date">2016-23</div>
+                    </div>
+                    <div class="experience-description">
+                        Was seleced from more than lakhs of students across UttarPradesh with <1% acceptance rate.
+                        Recieved full scholarship for 7 years from SNF.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="section scroll-animate">
+        <div class="container">
+            <h2>Get In Touch</h2>
+            <form class="contact-form" action="https://formspree.io/f/xdkdgqva" method="POST">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" rows="6" required placeholder="Drop a hello..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <nav class="bottom-nav" id="bottom-nav">
+        <a href="#home" title="Home" class="nav-link"><i class="fas fa-home"></i></a>
+        <a href="#about" title="About" class="nav-link"><i class="fas fa-user"></i></a>
+        <a href="#experience" title="Experience" class="nav-link"><i class="fas fa-briefcase"></i></a>
+        <a href="#skills" title="Skills" class="nav-link"><i class="fas fa-cogs"></i></a>
+        <a href="#projects" title="Projects" class="nav-link"><i class="fas fa-project-diagram"></i></a>
+        <a href="#education" title="Education" class="nav-link"><i class="fas fa-graduation-cap"></i></a>
+        <a href="#achievements" title="Achievements" class="nav-link"><i class="fas fa-trophy"></i></a>
+        <a href="#contact" title="Contact" class="nav-link"><i class="fas fa-envelope"></i></a>
+    </nav>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <h3>Let's Work Together</h3>
+            <p>I'm always open to discussing new opportunities, interesting projects, and creative ideas. Feel free to reach out if you'd like to collaborate or just want to say hello!</p>
+            <div class="social-links">
+                <a href="mailto:shivsrijit23110009@snuchennai.edu.in" title="Email">
+                    <span><i class="fas fa-envelope"></i></span>
+                </a>
+                <a href="https://linkedin.com/in/shivsrijit" target="_blank" title="LinkedIn">
+                    <span><i class="fab fa-linkedin-in"></i></span>
+                </a>
+                <a href="https://github.com/shivsrijit" target="_blank" title="GitHub">
+                    <span><i class="fab fa-github"></i></span>
+                </a>
+                <a href="tel:+916392437478" title="Phone">
+                    <span><i class="fas fa-phone"></i></span>
+                </a>
+            </div>
+            <div class="footer-bottom" style="margin-bottom: 90px;">
+                <p>&copy; 2024 Shivsrijit Verma. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Particle creation logic
+            const particlesContainer = document.getElementById('football-particles');
+            if (particlesContainer) {
+                const particleCount = 10;
+                const createSingleParticle = (container) => {
+                    const particle = document.createElement('div');
+                    particle.className = 'football-particle';
+                    particle.textContent = '⚽';
+                    particle.style.left = Math.random() * 100 + 'vw';
+                    particle.style.top = Math.random() * 100 + 'vh';
+                    particle.style.animationDelay = Math.random() * 8 + 's';
+                    particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                    particle.addEventListener('click', function() {
+                        if (!this.classList.contains('clicked')) {
+                            this.classList.add('clicked');
+                            setTimeout(() => {
+                                if (this.parentNode) this.remove();
+                                createSingleParticle(container);
+                            }, 1000);
+                        }
+                    });
+                    container.appendChild(particle);
+                };
+                for (let i = 0; i < particleCount; i++) {
+                    createSingleParticle(particlesContainer);
+                }
+            }
+
+            // Smooth scrolling for all anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Update active nav link on scroll
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.bottom-nav a');
+            const updateActiveLink = () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (window.pageYOffset >= sectionTop - 60) {
+                        current = section.getAttribute('id');
+                    }
+                });
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            };
+            window.addEventListener('scroll', updateActiveLink);
+            updateActiveLink();
+
+
+            // Scroll reveal animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            document.querySelectorAll('.scroll-animate').forEach(el => observer.observe(el));
+
+            // Form submission simulation
+            // const contactForm = document.querySelector('.contact-form');
+            // if (contactForm) {
+            //     contactForm.addEventListener('submit', function(e) {
+            //         e.preventDefault();
+            //         const submitBtn = this.querySelector('.submit-btn');
+            //         const originalText = submitBtn.textContent;
+            //         submitBtn.disabled = true;
+            //         submitBtn.textContent = 'Sending...';
+            //         setTimeout(() => {
+            //             submitBtn.textContent = 'Message Sent!';
+            //             setTimeout(() => {
+            //                 submitBtn.textContent = originalText;
+            //                 submitBtn.disabled = false;
+            //                 this.reset();
+            //             }, 2000);
+            //         }, 1500);
+            //     });
+            // }
+        });
+    </script>
+</body>
+</html>
